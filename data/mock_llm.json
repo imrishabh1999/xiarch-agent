@@ -1,0 +1,151 @@
+{
+  "_comment": "Canned LLM replies for --mock mode, keyed by stage. Lets the full agent run with no API key.",
+  "plan": {
+    "interpretation": "Identify the three most significant solid-state battery news items published in the last 7 days, with sources.",
+    "assumptions": [
+      "'Last week' means the 7 days up to and including today.",
+      "'Developments' means product, research, manufacturing or funding news, not opinion pieces.",
+      "Significance is judged by how concrete the news is (production, results, money) and how many sources report it."
+    ],
+    "steps": [
+      {
+        "id": 1,
+        "description": "Search general solid-state battery news from the last week",
+        "tool": "web_search",
+        "args": {
+          "query": "solid-state battery news",
+          "max_results": 5
+        },
+        "rationale": "Broad query to see what is being reported.",
+        "depends_on": [],
+        "bind_at_runtime": false
+      },
+      {
+        "id": 2,
+        "description": "Search research and manufacturing angle",
+        "tool": "web_search",
+        "args": {
+          "query": "solid-state battery breakthrough production",
+          "max_results": 5
+        },
+        "rationale": "A second wording catches items the first query missed.",
+        "depends_on": [],
+        "bind_at_runtime": false
+      },
+      {
+        "id": 3,
+        "description": "Compute what share of collected results fall inside the 7-day window",
+        "tool": "calculator",
+        "args": {},
+        "rationale": "Quantifies how much of the evidence is actually recent.",
+        "depends_on": [
+          1,
+          2
+        ],
+        "bind_at_runtime": true
+      },
+      {
+        "id": 4,
+        "description": "Rank in-window items and pick the top 3 developments",
+        "tool": "reason",
+        "args": {},
+        "rationale": "Turns raw results into the three findings the goal asks for.",
+        "depends_on": [
+          1,
+          2,
+          3
+        ],
+        "bind_at_runtime": false
+      },
+      {
+        "id": 5,
+        "description": "Save the report",
+        "tool": "write_file",
+        "args": {
+          "path": "report.md"
+        },
+        "rationale": "The goal needs a saved structured report.",
+        "depends_on": [
+          4
+        ],
+        "bind_at_runtime": false
+      }
+    ]
+  },
+  "bind": {
+    "expression": "4 / 5 * 100"
+  },
+  "reason": {
+    "findings": [
+      {
+        "title": "Automaker starts pilot production of solid-state cells",
+        "summary": "A pilot line is now producing solid-state cells for test vehicles, with volume production targeted later in the decade.",
+        "evidence_ids": [
+          "R1"
+        ],
+        "why_selected": "Concrete manufacturing milestone."
+      },
+      {
+        "title": "Sulfide electrolyte survives 1,000 cycles without dendrites",
+        "summary": "A university team reports a sulfide solid electrolyte that ran 1,000 charge cycles in lab cells without dendrite short circuits.",
+        "evidence_ids": [
+          "R2"
+        ],
+        "why_selected": "Addresses a key technical barrier, with a measured result."
+      },
+      {
+        "title": "Startup raises funding to scale solid-state manufacturing",
+        "summary": "A solid-state battery startup closed a funding round to build a larger factory.",
+        "evidence_ids": [
+          "R3"
+        ],
+        "why_selected": "Shows money moving toward production."
+      }
+    ],
+    "notes": "R4 is analysis rather than news; R5 falls outside the 7-day window and was excluded."
+  },
+  "reformulate": {
+    "query": "solid state battery"
+  },
+  "replan": {
+    "interpretation": "Same goal, new approach after every search failed.",
+    "assumptions": [
+      "The earlier queries failed for technical reasons, so one simpler query is tried."
+    ],
+    "steps": [
+      {
+        "id": 6,
+        "description": "Retry with one simple, broad query",
+        "tool": "web_search",
+        "args": {
+          "query": "solid state batteries",
+          "max_results": 10
+        },
+        "rationale": "Earlier searches all failed; a single broad query is the cheapest new attempt.",
+        "depends_on": []
+      },
+      {
+        "id": 7,
+        "description": "Pick the top 3 developments from whatever was found",
+        "tool": "reason",
+        "args": {},
+        "rationale": "Turns results into findings.",
+        "depends_on": [
+          6
+        ]
+      },
+      {
+        "id": 8,
+        "description": "Save the report",
+        "tool": "write_file",
+        "args": {
+          "path": "report.md"
+        },
+        "rationale": "Deliver the result.",
+        "depends_on": [
+          7
+        ]
+      }
+    ]
+  }
+}

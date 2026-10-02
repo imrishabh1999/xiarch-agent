@@ -1,0 +1,33 @@
+digraph agent {
+  rankdir=TB; fontname="Helvetica"; nodesep=0.45; ranksep=0.5; bgcolor="white";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#555555", fillcolor="#f4f4f4", margin="0.2,0.1"];
+  edge [fontname="Helvetica", fontsize=10, color="#555555"];
+
+  goal    [label="Goal from the user\n\"Find the top 3 developments in X from the last week\"", fillcolor="#e8f0fe"];
+  planner [label="Planner (LLM)\nbreaks the goal into 3-7 steps\nand writes down its assumptions", fillcolor="#fff4e5"];
+  check   [label="Plan check (code)\nreal tools? right inputs? right order?\nif not, ask the LLM once more"];
+  ask     [label="Goal too vague\nask the user a question", fillcolor="#fde8e8"];
+
+  subgraph cluster_loop {
+    label="Run each step"; fontname="Helvetica"; fontsize=12; style="rounded,dashed"; color="#999999";
+    tools  [label="Tools\nweb_search | calculator | write_file", fillcolor="#e6f4ea"];
+    critic [label="Critic (code, not LLM)\nerror? empty? junk? older than 7 days?\nmade-up sources or numbers?"];
+    fix    [label="Recovery\ntry again | new search words | saved results\nmake a new plan (once)", fillcolor="#fde8e8"];
+    keep   [label="Keep the result\nas numbered evidence (R1, R2 ...)"];
+  }
+
+  report  [label="Report\nreport.md + report.json\nfindings with links, problems, limits", fillcolor="#e8f0fe"];
+  trace   [label="Trace log\nruns/<time>/trace.jsonl\nevery step written down"];
+
+  goal -> planner -> check;
+  check -> ask [label=" can't tell what\n the user wants", style=dashed];
+  check -> tools [label=" plan OK"];
+  tools -> critic;
+  critic -> keep [label=" good"];
+  critic -> fix [label=" bad"];
+  fix -> tools [label=" next try"];
+  keep -> tools [label=" next step"];
+  keep -> report [label=" all steps done"];
+  fix -> report [label=" nothing worked:\n honest 'failed' report", style=dashed];
+  tools -> trace [style=dotted, arrowhead=none];
+}

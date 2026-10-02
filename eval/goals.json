@@ -1,0 +1,13 @@
+{
+  "_comment": "Evaluation suite. 'expect' lists acceptable outcomes. 'mock': true goals also run in --mock mode (mock data only covers solid-state batteries).",
+  "goals": [
+    {"id": "G1", "goal": "Find the top 3 developments in solid-state batteries from the last week", "inject": [], "expect": ["complete"], "mock": true, "tests": "happy path"},
+    {"id": "G2", "goal": "Find the top 3 developments in AI regulation from the last week", "inject": [], "expect": ["complete"], "mock": false, "tests": "different domain"},
+    {"id": "G3", "goal": "Find the top 3 developments in quantum computing from the last week", "inject": ["search:timeout:2"], "expect": ["complete"], "mock": false, "tests": "timeouts -> retry"},
+    {"id": "G4", "goal": "Find the top 3 developments in solid-state batteries from the last week", "inject": ["search:empty:1"], "expect": ["complete"], "mock": true, "tests": "empty -> reformulate"},
+    {"id": "G5", "goal": "Find the top 3 developments in solid-state batteries from the last week", "inject": ["search:garbage:1"], "expect": ["complete"], "mock": true, "tests": "malformed output -> retry"},
+    {"id": "G6", "goal": "Find the top 3 developments in renewable energy from the last week", "inject": ["search:error:all"], "expect": ["failed"], "mock": true, "tests": "total outage -> replan -> honest failed report"},
+    {"id": "G7", "goal": "do the thing", "inject": [], "expect": ["clarification"], "mock": false, "tests": "ambiguous goal"},
+    {"id": "G8", "goal": "Find the top 3 developments in competitive underwater basket weaving from the last week", "inject": [], "expect": ["partial", "failed"], "mock": false, "tests": "almost no real news -> no padding"}
+  ]
+}

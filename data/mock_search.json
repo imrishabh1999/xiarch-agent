@@ -1,0 +1,15 @@
+{
+  "_comment": "Deterministic search results for --mock mode (no internet, no API key). Dates are relative (days_ago) so the 'last week' window always works. One result is deliberately 12 days old so the critic's date check has something to catch.",
+  "topics": [
+    {
+      "keywords": ["solid-state", "solid state", "battery", "batteries"],
+      "results": [
+        {"title": "Automaker begins pilot production of solid-state cells", "url": "https://example.com/mock/ss-pilot-line", "snippet": "A pilot line has started producing solid-state battery cells for test vehicles, with volume production targeted later in the decade.", "source": "Mock Auto News", "days_ago": 2},
+        {"title": "Researchers report sulfide electrolyte that resists dendrites", "url": "https://example.com/mock/ss-electrolyte", "snippet": "A university team describes a sulfide solid electrolyte that survived 1,000 charge cycles without dendrite short circuits in lab cells.", "source": "Mock Science Daily", "days_ago": 4},
+        {"title": "Battery startup raises funding for solid-state scale-up", "url": "https://example.com/mock/ss-funding", "snippet": "A solid-state battery startup closed a new funding round to build a larger manufacturing facility.", "source": "Mock Tech Wire", "days_ago": 5},
+        {"title": "Analysis: why solid-state batteries are still expensive", "url": "https://example.com/mock/ss-cost", "snippet": "Analysts say manufacturing yield and materials cost keep solid-state cells far above lithium-ion prices.", "source": "Mock Energy Review", "days_ago": 6},
+        {"title": "Old announcement: solid-state roadmap unveiled", "url": "https://example.com/mock/ss-old", "snippet": "A roadmap for solid-state batteries was announced at a trade show.", "source": "Mock Archive", "days_ago": 12}
+      ]
+    }
+  ]
+}
